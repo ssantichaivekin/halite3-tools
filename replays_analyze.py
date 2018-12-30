@@ -78,25 +78,23 @@ if __name__ == '__main__' :
     # asks whether to display winrate vs mapsize or winrate vs halite density
     # uses matplotlib to plot
 
-    print("Please input folder path")
-    folderpath = input().strip()
-    jsonpaths = jsons_in_folder(folderpath)
+    with open('./replays_analyze_config.json', 'r') as config_file :
+        config = json.loads(config_file.read())
+
+    folderpath = config["folder_path"]
     # we will process all the replays in that folder.
 
-    print("Enter the number of players you want to take the sample")
-    n_players = int(input().strip())
+    n_players = config["n_players"]
     if not (n_players == 2 or n_players == 4) :
         raise Exception("Wrong number of players: n_players = %d" % n_players)
     
-    print("Select the map sizes you want to display seperated by space (eg '32 40 48')")
-    map_sizes = list(map(int, input().split()))
+    map_sizes = config["map_sizes"]
     if not map_sizes :
         raise Exception("Empty map_sizes")
 
-    print("Select your x-axis : can either be 'mapsize' or 'density'")
-    x_axis = input().strip()
-    if not (x_axis == 'mapsize' or x_axis == 'density') :
-        raise Exception("Invalid x_axis value : %s' x_axis")
+    x_axis_display = config["x_axis_display"]
+    if not (x_axis_display == 'mapsize' or x_axis_display == 'density') :
+        raise Exception("Invalid x_axis_display value (should be 'mapsize' or 'density'): %s" % x_axis_display)
 
 
     # read the tempfile if exist :
@@ -106,31 +104,33 @@ if __name__ == '__main__' :
             replay_infos = json.loads(tempfile.read())
     except :
         # else create one also
+        jsonpaths = jsons_in_folder(folderpath)
         replay_infos = [read_replay_for_rank(json_path) for json_path in jsonpaths]
         # create a tempfile
         with open(temppath, 'w') as tempfile :
             tempfile.write(json.dumps(replay_infos))
 
-    if (x_axis == 'mapsize') :
+    if (x_axis_display == 'mapsize') :
         x = map_sizes
         y = []
         for map_size in map_sizes :
             # compute the average rank for that map size
-            this_infos = filter_num_players(n_players, replay_infos)
-            this_infos = filter_map_size(map_size, this_infos)
+            filtered_infos = filter_num_players(n_players, replay_infos)
+            filtered_infos = filter_map_size(map_size, filtered_infos)
 
             total_rank = 0
-            n = len(this_infos)
+            n = len(filtered_infos)
 
-            for replay_info in this_infos :
+            for replay_info in filtered_infos :
                 total_rank += replay_info["my_rank"]
 
             average_rank = total_rank / n
             y.append(average_rank)
+        plt.title("Average Rank -- lower is better")
         plt.plot(x, y, 'o')
         plt.show()
  
-    else : # x_axis == 'density'
+    else : # x_axis_display == 'density'
         # then we have to create a histogram
         # we first split the replays in to ten sections
         # then, for each section, find the average rank
@@ -168,7 +168,7 @@ if __name__ == '__main__' :
                 total_rank += replay_info["my_rank"]
             
             # round to make it easy to look at
-            average_production_density = round(total_production_density / n, 2)
+            average_production_density = round(total_production_density / n, 1)
             average_rank = total_rank / n
 
             x.append(average_production_density)
@@ -180,12 +180,7 @@ if __name__ == '__main__' :
 
         fig.canvas.draw()
 
+        plt.title("Average Rank -- lower is better")
         plt.plot(a, y)
         plt.xticks(a, x)
         plt.show()
-
-
-            
-
-            
-

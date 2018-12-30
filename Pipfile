@@ -5,3 +5,5 @@ name = "pypi"
 
 [packages]
 zstandard = "*"
+requests = "*"
+matplotlib = "*"

@@ -1,0 +1,15 @@
+{
+    "folder_paths": [
+        "./workdir/sample-demo-1",
+        "./workdir/sample-demo-2"
+    ],
+    "map_sizes": [
+        32,
+        40,
+        48,
+        56,
+        64
+    ],
+    "n_players": 2,
+    "x_axis_display": "density"
+}

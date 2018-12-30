@@ -1,0 +1,6 @@
+{
+    "folder_path": "../hlt_client/downloads/",
+    "map_sizes": [32, 40, 48, 56, 64],
+    "n_players": 4,
+    "x_axis_display": "density"
+}
