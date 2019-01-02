@@ -1,7 +1,6 @@
 {
     "folder_paths": [
-        "./workdir/sample-demo-1",
-        "./workdir/sample-demo-2"
+        "./workdir/sample-replay"
     ],
     "map_sizes": [
         32,
@@ -11,5 +10,5 @@
         64
     ],
     "n_players": 2,
-    "x_axis_display": "density"
+    "x_axis_display": "mapsize"
 }

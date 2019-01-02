@@ -1,0 +1,8 @@
+{
+    "n_games": 10,
+    "map_sizes": [32, 40, 48, 56, 64],
+    "game_engine_dir": "workdir/game-engine",
+    "replay_dir": "workdir/sample-replay",
+    "bot_call_command": "./workdir/cpp-v25/Mybot",
+    "empty_bot_call_command": "python3 workdir/python-empty/DoNothing.py"
+}

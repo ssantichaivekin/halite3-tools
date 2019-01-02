@@ -63,6 +63,8 @@ def jsons_in_folder(folderpath) :
     for filename in filenames :
         if filename.endswith(".json") and "temp" not in filename :
             jsonpaths.append(os.path.join(folderpath, filename))
+        elif filename.endswith(".hlt") :
+            jsonpaths.append(os.path.join(folderpath, filename))
     return jsonpaths
 
 if __name__ == '__main__' :
